@@ -1,6 +1,9 @@
 # Pip freeze > requirements.txt
 # Pip install -r requirements.txt
-from flask import Flask, request, jsonify
+# pip install -U spacy
+# pip install spacy-langdetect
+# python -m spacy download en_core_web_sm
+from flask import Flask, request, jsonify, render_template
 import spacy
 from spacy_langdetect import LanguageDetector
 from spacy.language import Language

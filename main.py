@@ -17,8 +17,8 @@ nlp.add_pipe('language_detector')
 
 
 @app.route('/')
-def intro():
-    return "Welcome to Visinus.ai Language Detector"
+def home():
+    return render_template('index.html')
 
 def language_out(id,doc):
     lan = doc._.language

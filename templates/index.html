@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>Language Detection API</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+ <div class="login">
+	<h1>Welcome to Language Detection Tool</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('language_detect')}}"method="post">
+    	<input type="text" name="document" placeholder="Enter your text" required="required" />
+        <p style="font-size:12px;">(Up to 500 characters)</p>
+<!--        <input type="text" name="test_score" placeholder="Test Score" required="required" />-->
+<!--		<input type="text" name="interview_score" placeholder="Interview Score" required="required" />-->
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">Detect Language</button>
+    </form>
+
+     <br> <br> <br> <br>
+
+<!--     <embed src="supported_languages.pdf" type="application/pdf" width="100%" height="100%"/>-->
+    <p style="font-size:12px;">Developed using <a href="https://spacy.io/"><font color="white"> Spacy.io</font></a></p>
+     <p style="font-size:12px;"><a href="https://spacy.io/usage/models#languages"><font color="white"> Supported Languages</font></a></p>
+     <br> <br> <br>
+     <p style="font-size:12px;">Desinged and implemented by Abhinay Krishna Vellala</p>
+
+ </div>
+
+
+</body>
+</html>

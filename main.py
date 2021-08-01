@@ -1,5 +1,5 @@
-# Pip freeze > requirements.txt
-# Pip install -r requirements.txt
+# pip freeze > requirements.txt
+# pip install -r requirements.txt
 # pip install -U spacy
 # pip install spacy-langdetect
 # python -m spacy download en_core_web_sm
@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify, render_template
 import spacy
 from spacy_langdetect import LanguageDetector
 from spacy.language import Language
+import pandas as pd
 
 
 app = Flask(__name__)
@@ -18,14 +19,15 @@ def create_language_detector(nlp, name):
 nlp = spacy.load("en_core_web_sm")
 nlp.add_pipe('language_detector')
 
+df = pd.read_csv("language_codes_spacy.csv", sep=";")
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-def language_out(id,doc):
+def language_out(doc):
     lan = doc._.language
-    return {"Index": id, "LanguageCode": lan['language'], "Score": lan['score']}
+    return {"LanguageCode": lan['language'], "Score": lan['score']}
 
 class AppError(Exception):
     def __init__(self,message):
@@ -37,27 +39,20 @@ class AppError(Exception):
 @app.route('/language_detect', methods=['POST'])
 def language_detect():
     # text = request.json['Comment']
-    queries = request.json['TextList']
-    lanDict = {}
-    languages = []
-    if len(queries) > 2:
-        raise AppError("Cannot process more than 100 requests at a time")
-    if len(queries) == 0:
-        raise AppError("No document passed")
-    try:
-        if len(queries) == 1:
-            doc = nlp(queries[0])
-            languages.append(language_out(0, doc))
-        else:
-            for idx,query in enumerate(queries):
-                doc = nlp(query)
-                languages.append(language_out(idx,doc))
-    except:
-        print("No Language Detected")
+    # queries = request.json['TextList']
+    queries = request.form
+    # lanDict = {}
+    # languages = []
+    # if len(queries) > 2:
+    #     raise AppError("Cannot process more than 100 requests at a time")
+    # if len(queries) == 0:
+    #     raise AppError("No document passed")
+    doc = nlp(queries['document'])
+    langDict = doc._.language
+    lang = list(df['language'].loc[df['code'] == langDict['language']])[0]
+    score = round(langDict['score'] *100,5)
+    return render_template('index2.html', document= queries['document'],prediction_text='The Language Detected is {} with {}% probability'.format(lang,score))
 
-
-    lanDict["ResultList"] = languages
-    return jsonify(lanDict)
 
 if __name__ == '__main__':
     # create_app().run(host='0.0.0.0', port=5000, debug=True)

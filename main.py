@@ -1,5 +1,6 @@
 # pip freeze > requirements.txt
 # pip install -r requirements.txt
+# pip list --format=freeze > requirements.txt
 # pip install -U spacy
 # pip install spacy-langdetect
 # python -m spacy download en_core_web_sm
